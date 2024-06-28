@@ -146,9 +146,25 @@
         const scorepara = document.querySelector('.score');
         let currentindex = 0;
         let score = 0
+        function setscoreandreset(){
+            currentindex++;
+            if (currentindex > questions.length) {
+                question.style.display = "none";
+                buttoncontainer.innerHTML = " ";
+                scorepara.style.display = "block";
+                scorepara.innerHTML = `Your score is ${score} out of ${questions.length}`;
+                start.style.display = "block";
+                Next.style.display = "none";
+                currentindex = 0;
+                score = 0
+                return;
+            }
+        }
+
         function setNextQuestion() {
+            setscoreandreset();
             buttoncontainer.innerHTML = '';
-            let currentquestion = questions[currentindex];
+            let currentquestion = questions[currentindex-1];
             let qno = currentindex + 1;
             question.innerHTML = `Q${qno}. ${currentquestion.question}`;
             currentquestion.options.forEach((option) => {
@@ -158,12 +174,22 @@
                 buttoncontainer.appendChild(element);
                 buttoncontainer.style.display = "block";
                 element.addEventListener("click", () => {
-                    
+                    /*
+                    Why the First Click Works Well:
+Synchronous Execution: JavaScript executes the event listener function synchronously. This means that all the operations within the click event listener (disabling buttons, changing colors, etc.) are executed in sequence before the function completes.
+Immediate Disabling: Disabling the buttons happens immediately after the event listener starts executing, but it does not interfere with the ongoing execution of the event listener for the current click. This ensures that the logic for the current click is processed completely.
+Preventing Further Clicks: Once the buttons are disabled, no further click events can be registered, preventing any additional clicks from affecting the current question's state.
+                    */
+                    const allButtons = buttoncontainer.querySelectorAll('button');
+                    allButtons.forEach(btn => btn.disabled = true);
+
                     if (option.correct) {
                         element.style.backgroundColor = "green";
                         score++;
+
+
                     }
-                  
+
                     else {
                         element.style.backgroundColor = "red";
                         for (let i = 0; i < currentquestion.options.length; i++) {
@@ -179,18 +205,8 @@
 
             })
 
-            currentindex++;
 
-            if (currentindex >= questions.length) {
-                question.style.display = "none";
-                buttoncontainer.innerHTML = " ";
-                scorepara.style.display = "block";
-                scorepara.innerHTML = `Your score is ${score} out of ${questions.length}`;
-                start.style.display = "block";
-                Next.style.display = "none";
-                currentindex = 0;
-                score = 0
-            }
+
         }
         function startquiz() {
             currentindex = 0;
