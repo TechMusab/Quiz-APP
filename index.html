@@ -21,9 +21,15 @@
         </h2>
         <div class="questions">
         </div>
+        <button class="start">
+            Start Quiz
+        </button>
         <button class="next-button">
             Next
         </button>
+        <h2 class="score">
+
+        </h2>
     </div>
     <script>
         const questions = [
@@ -135,10 +141,13 @@
         ];
         const question = document.querySelector('#question');
         const Next = document.querySelector('.next-button');
+        const start = document.querySelector('.start');
         const buttoncontainer = document.querySelector('.questions');
+        const scorepara = document.querySelector('.score');
         let currentindex = 0;
         let score = 0
         function setNextQuestion() {
+            buttoncontainer.innerHTML = '';
             let currentquestion = questions[currentindex];
             let qno = currentindex + 1;
             question.innerHTML = `Q${qno}. ${currentquestion.question}`;
@@ -147,22 +156,55 @@
                 element.innerHTML = option.text;
                 element.classList.add('btn');
                 buttoncontainer.appendChild(element);
-                buttoncontainer.style.display="block";
+                buttoncontainer.style.display = "block";
+                element.addEventListener("click", () => {
+                    
+                    if (option.correct) {
+                        element.style.backgroundColor = "green";
+                        score++;
+                    }
+                  
+                    else {
+                        element.style.backgroundColor = "red";
+                        for (let i = 0; i < currentquestion.options.length; i++) {
+                            if (currentquestion.options[i].correct) {
+                                // make the child element green which is correct
+                                buttoncontainer.children[i].style.backgroundColor = "green";
+
+                            }
+                        }
+                    }
+
+                })
+
             })
+
+            currentindex++;
+
+            if (currentindex >= questions.length) {
+                question.style.display = "none";
+                buttoncontainer.innerHTML = " ";
+                scorepara.style.display = "block";
+                scorepara.innerHTML = `Your score is ${score} out of ${questions.length}`;
+                start.style.display = "block";
+                Next.style.display = "none";
+                currentindex = 0;
+                score = 0
+            }
         }
         function startquiz() {
             currentindex = 0;
             score = 0;
-            Next.style.display = "block";
-            Next.innerHTML = "Start Quiz";
-            Next.addEventListener('click', () => {
-                Next.style.display = "none";
+            start.style.display = "block";
+            start.innerHTML = "Start Quiz";
+            start.addEventListener('click', () => {
+                start.style.display = "none";
                 setNextQuestion();
+                Next.style.display = "block";
+                scorepara.style.display = "none";
             });
-
-
+            Next.addEventListener('click', setNextQuestion);
         }
-
         startquiz()
 
     </script>
