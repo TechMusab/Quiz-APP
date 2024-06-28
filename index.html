@@ -1,26 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
-<body>
-    <div class="app-container">
-        <h2>
 
+<body>
+
+
+
+    <div class="app-container">
+        <h1 class="heading">
+            Sample Quiz
+        </h1>
+        <h2 id="question">
+            Questions
         </h2>
         <div class="questions">
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
         </div>
         <button class="next-button">
-
+            Next
         </button>
     </div>
-    
+    <script>
+        const questions = [
+            {
+                question: "Which is the largest country in the world by population?",
+                options: [
+                    {
+                        text: "India",
+                        correct: false
+                    },
+                    {
+                        text: "USA",
+                        correct: false
+                    },
+                    {
+                        text: "Russia",
+                        correct: false
+                    },
+                    {
+                        text: "China",
+                        correct: true
+                    }
+                ]
+            },
+            {
+                question: "What is the capital of France?",
+                options: [
+                    {
+                        text: "Berlin",
+                        correct: false
+                    },
+                    {
+                        text: "Madrid",
+                        correct: false
+                    },
+                    {
+                        text: "Paris",
+                        correct: true
+                    },
+                    {
+                        text: "Rome",
+                        correct: false
+                    }
+                ]
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: [
+                    {
+                        text: "Earth",
+                        correct: false
+                    },
+                    {
+                        text: "Mars",
+                        correct: true
+                    },
+                    {
+                        text: "Jupiter",
+                        correct: false
+                    },
+                    {
+                        text: "Venus",
+                        correct: false
+                    }
+                ]
+            },
+            {
+                question: "Who wrote 'Romeo and Juliet'?",
+                options: [
+                    {
+                        text: "William Shakespeare",
+                        correct: true
+                    },
+                    {
+                        text: "Charles Dickens",
+                        correct: false
+                    },
+                    {
+                        text: "Mark Twain",
+                        correct: false
+                    },
+                    {
+                        text: "Jane Austen",
+                        correct: false
+                    }
+                ]
+            },
+            {
+                question: "What is the boiling point of water?",
+                options: [
+                    {
+                        text: "90°C",
+                        correct: false
+                    },
+                    {
+                        text: "100°C",
+                        correct: true
+                    },
+                    {
+                        text: "80°C",
+                        correct: false
+                    },
+                    {
+                        text: "120°C",
+                        correct: false
+                    }
+                ]
+            }
+        ];
+        const question = document.querySelector('#question');
+        const Next = document.querySelector('.next-button');
+        const buttoncontainer = document.querySelector('.questions');
+        let currentindex = 0;
+        let score = 0
+        function setNextQuestion() {
+            let currentquestion = questions[currentindex];
+            let qno = currentindex + 1;
+            question.innerHTML = `Q${qno}. ${currentquestion.question}`;
+            currentquestion.options.forEach((option) => {
+                const element = document.createElement("button");
+                element.innerHTML = option.text;
+                element.classList.add('btn');
+                buttoncontainer.appendChild(element);
+                buttoncontainer.style.display="block";
+            })
+        }
+        function startquiz() {
+            currentindex = 0;
+            score = 0;
+            Next.style.display = "block";
+            Next.innerHTML = "Start Quiz";
+            Next.addEventListener('click', () => {
+                Next.style.display = "none";
+                setNextQuestion();
+            });
+
+
+        }
+
+        startquiz()
+
+    </script>
 </body>
+
 </html>
